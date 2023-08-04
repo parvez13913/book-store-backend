@@ -18,6 +18,13 @@ const bookSchema = new Schema<IBook, BookModel>({
     type: String,
     required: true,
   },
+  imageURL: {
+    type: String,
+  },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
   reviews: {
     type: String,
   },
