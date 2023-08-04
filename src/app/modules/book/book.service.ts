@@ -5,6 +5,8 @@ import { IPaginationOptions } from '../../../interfaces/pagination';
 import { bookSearchableFields } from './book.constants';
 import { IBook, IBookFilters } from './book.interface';
 import { Book } from './book.model';
+import ApiError from '../../../errors/ApiError';
+import httpStatus from 'http-status';
 
 const createBook = async (payload: IBook): Promise<IBook | null> => {
   const result = (await Book.create(payload)).populate('owner');
@@ -72,8 +74,23 @@ const getSingleBook = async (id: string): Promise<IBook | null> => {
   return result;
 };
 
+const updateBook = async (id: string, payload: Partial<IBook>) => {
+  const isExist = await Book.findOne({ _id: id });
+
+  if (!isExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Sorry Book not Found');
+  }
+
+  const result = await Book.findByIdAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+
+  return result;
+};
+
 export const BookService = {
   createBook,
   getAllBooks,
   getSingleBook,
+  updateBook,
 };
