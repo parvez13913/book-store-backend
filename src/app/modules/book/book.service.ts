@@ -74,7 +74,10 @@ const getSingleBook = async (id: string): Promise<IBook | null> => {
   return result;
 };
 
-const updateBook = async (id: string, payload: Partial<IBook>) => {
+const updateBook = async (
+  id: string,
+  payload: Partial<IBook>,
+): Promise<IBook | null> => {
   const isExist = await Book.findOne({ _id: id });
 
   if (!isExist) {
@@ -88,9 +91,16 @@ const updateBook = async (id: string, payload: Partial<IBook>) => {
   return result;
 };
 
+const deleteBook = async (id: string): Promise<IBook | null> => {
+  const result = await Book.findOneAndDelete({ _id: id });
+
+  return result;
+};
+
 export const BookService = {
   createBook,
   getAllBooks,
   getSingleBook,
   updateBook,
+  deleteBook,
 };
