@@ -11,4 +11,12 @@ export type IBook = {
   reviews?: [];
 };
 
+export type IBookFilters = {
+  searchTerm?: string;
+  id?: string;
+  author?: string;
+  genre?: string;
+  title?: string;
+};
+
 export type BookModel = Model<IBook, Record<string, unknown>>;
