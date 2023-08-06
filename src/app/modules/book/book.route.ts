@@ -6,7 +6,11 @@ import { BookValidation } from './book.validation';
 const router = express.Router();
 
 router.get('/:id', BookController.getSingleBook);
-router.patch('/:id', BookController.updateBook);
+router.patch(
+  '/:id',
+  validateRequest(BookValidation.updateBookZodSchema),
+  BookController.updateBook,
+);
 router.delete('/:id', BookController.deleteBook);
 router.post(
   '/create-book',
