@@ -12,7 +12,11 @@ router.patch(
   BookController.updateBook,
 );
 router.delete('/:id', BookController.deleteBook);
-router.patch('/reviews/:id', BookController.userReview);
+router.patch(
+  '/reviews/:id',
+  validateRequest(BookValidation.reviewZodSchema),
+  BookController.userReview,
+);
 router.post(
   '/create-book',
   validateRequest(BookValidation.createBookZodSchema),
