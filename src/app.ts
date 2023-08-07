@@ -1,5 +1,6 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import { UserRouter } from './app/modules/user/user.route';
 import { BookRoute } from './app/modules/book/book.route';
@@ -8,6 +9,7 @@ import { AuthRouter } from './app/modules/auth/auth.route';
 const app: Application = express();
 
 app.use(cors());
+app.use(cookieParser());
 
 // parser
 app.use(express.json());

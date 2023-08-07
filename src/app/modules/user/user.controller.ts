@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response } from 'express';
 import catchAsync from '../../../shared/catchAsync';
 import httpStatus from 'http-status';
