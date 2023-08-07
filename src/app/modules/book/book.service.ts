@@ -3,7 +3,7 @@ import { PaginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { bookSearchableFields } from './book.constants';
-import { IBook, IBookFilters } from './book.interface';
+import { IBook, IBookFilters, IReview } from './book.interface';
 import { Book } from './book.model';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
@@ -97,10 +97,30 @@ const deleteBook = async (id: string): Promise<IBook | null> => {
   return result;
 };
 
+const userReview = async (
+  id: string,
+  review: IReview,
+): Promise<IBook | null> => {
+  const isBookExist = await Book.findOne({ _id: id });
+
+  if (!isBookExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Book is not found');
+  }
+
+  const result = await Book.findByIdAndUpdate(
+    { _id: id },
+    { $push: { reviews: review } },
+    { new: true },
+  ).populate('owner');
+
+  return result;
+};
+
 export const BookService = {
   createBook,
   getAllBooks,
   getSingleBook,
   updateBook,
   deleteBook,
+  userReview,
 };

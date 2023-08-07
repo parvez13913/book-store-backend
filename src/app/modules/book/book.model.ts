@@ -26,7 +26,7 @@ const bookSchema = new Schema<IBook, BookModel>({
     ref: 'User',
   },
   reviews: {
-    type: String,
+    type: Array,
   },
 });
 

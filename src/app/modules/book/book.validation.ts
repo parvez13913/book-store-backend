@@ -20,7 +20,17 @@ const createBookZodSchema = z.object({
     owner: z.string({
       required_error: 'Owner is Required',
     }),
-    reviews: z.string().optional(),
+    reviews: z
+      .array(
+        z.object({
+          reviewerName: z.string().optional(),
+          reviewerEmail: z.string().optional(),
+          review: z.string({
+            required_error: 'Review is required',
+          }),
+        }),
+      )
+      .optional(),
   }),
 });
 const updateBookZodSchema = z.object({
@@ -31,7 +41,7 @@ const updateBookZodSchema = z.object({
     publicationDate: z.string().optional(),
     imageURL: z.string().optional(),
     owner: z.string().optional(),
-    reviews: z.string().optional(),
+    reviews: z.array(z.object({})).optional(),
   }),
 });
 
