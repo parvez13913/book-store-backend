@@ -1,3 +1,5 @@
+import { IGenre } from './book.interface';
+
 export const bookFiltrableFields = [
   'searchTerm',
   'id',
@@ -12,4 +14,13 @@ export const bookSearchableFields = [
   'genre',
   'title',
   'publicationDate',
+];
+
+export const Genre: IGenre[] = [
+  'Self-Help',
+  'Detective',
+  'Programming',
+  'Thriller',
+  'Science Fiction',
+  'Novel',
 ];

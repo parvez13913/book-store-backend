@@ -7,10 +7,18 @@ export type IReviewResponse = {
   review: string;
 } & Document;
 
+export type IGenre =
+  | 'Self-Help'
+  | 'Detective'
+  | 'Programming'
+  | 'Thriller'
+  | 'Science Fiction'
+  | 'Novel';
+
 export type IBook = {
   title: string;
   author: string;
-  genre: string;
+  genre: IGenre;
   publicationDate: string;
   imageURL: string;
   owner: Types.ObjectId | IUser;

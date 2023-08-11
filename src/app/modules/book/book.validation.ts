@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { Genre } from './book.constants';
 
 const createBookZodSchema = z.object({
   body: z.object({
@@ -8,7 +9,7 @@ const createBookZodSchema = z.object({
     author: z.string({
       required_error: 'Author is Required',
     }),
-    genre: z.string({
+    genre: z.enum([...Genre] as [string, ...string[]], {
       required_error: 'Genre is Required',
     }),
     publicationDate: z.string({
@@ -38,7 +39,11 @@ const updateBookZodSchema = z.object({
   body: z.object({
     title: z.string().optional(),
     author: z.string().optional(),
-    genre: z.string().optional(),
+    genre: z
+      .enum([...Genre] as [string, ...string[]], {
+        required_error: 'Genre is Required',
+      })
+      .optional(),
     publicationDate: z.string().optional(),
     imageURL: z.string().optional(),
     owner: z.string().optional(),
