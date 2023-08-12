@@ -23,6 +23,7 @@ const createBook = catchAsync(async (req: Request, res: Response) => {
 const getAllBooks = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, bookFiltrableFields);
   const paginationOption = pick(req.query, paginationFields);
+
   const result = await BookService.getAllBooks(filters, paginationOption);
 
   sendResponse<IBook[]>(res, {
