@@ -8,7 +8,6 @@ import config from '../../../config';
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const { ...loginData } = req.body;
-  console.log(loginData);
 
   const result = await AuthService.loginUser(loginData);
   const { refreshToken, ...others } = result;
@@ -29,8 +28,6 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
-  console.log(refreshToken);
-
   const result = await AuthService.refreshToken(refreshToken);
 
   const cookieOptions = {

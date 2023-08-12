@@ -93,7 +93,6 @@ const updateBook = async (
 
 const deleteBook = async (id: string): Promise<IBook | null> => {
   const result = await Book.findOneAndDelete({ _id: id });
-
   return result;
 };
 
@@ -111,7 +110,7 @@ const userReview = async (
     { _id: id },
     { $push: { reviews: review } },
     { new: true },
-  ).populate('owner');
+  );
 
   return result;
 };
