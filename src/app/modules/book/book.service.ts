@@ -7,6 +7,9 @@ import { IBook, IBookFilters, IReview } from './book.interface';
 import { Book } from './book.model';
 import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
+import { JwtHelpers } from '../../../helpers/jwtHelpers';
+import config from '../../../config';
+import { Secret } from 'jsonwebtoken';
 
 const createBook = async (payload: IBook): Promise<IBook | null> => {
   const result = (await Book.create(payload)).populate('owner');
@@ -77,13 +80,35 @@ const getSingleBook = async (id: string): Promise<IBook | null> => {
 const updateBook = async (
   id: string,
   payload: Partial<IBook>,
+  token: string,
 ): Promise<IBook | null> => {
+  if (!Object.keys(payload).length) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      'You did not enter anything to update !',
+    );
+  }
+
   const isExist = await Book.findOne({ _id: id });
 
   if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Sorry Book not Found');
   }
 
+  const verifiedUser = JwtHelpers.verifiedToken(
+    token,
+    config.jwt.jwt_secret as Secret,
+  );
+
+  if (!verifiedUser) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+  }
+
+  const book = await Book.findById({ _id: id });
+
+  if (book?.owner.toString() !== verifiedUser?.userId) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden..');
+  }
   const result = await Book.findByIdAndUpdate({ _id: id }, payload, {
     new: true,
   });

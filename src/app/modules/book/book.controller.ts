@@ -7,6 +7,7 @@ import { BookService } from './book.service';
 import pick from '../../../shared/pick';
 import { bookFiltrableFields } from './book.constants';
 import { paginationFields } from '../../constants/paginationConstants';
+import ApiError from '../../../errors/ApiError';
 
 const createBook = catchAsync(async (req: Request, res: Response) => {
   const { ...bookData } = req.body;
@@ -50,7 +51,13 @@ const getSingleBook = catchAsync(async (req: Request, res: Response) => {
 const updateBook = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const updatedData = req.body;
-  const result = await BookService.updateBook(id, updatedData);
+  const token = req.headers.authorization;
+
+  if (!token) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+  }
+
+  const result = await BookService.updateBook(id, updatedData, token);
 
   sendResponse<IBook>(res, {
     statusCode: httpStatus.OK,
