@@ -82,6 +82,7 @@ const updateBook = async (
   payload: Partial<IBook>,
   token: string,
 ): Promise<IBook | null> => {
+  const tokenWithoutQuotes = token.slice(1, -1);
   if (!Object.keys(payload).length) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
@@ -96,7 +97,7 @@ const updateBook = async (
   }
 
   const verifiedUser = JwtHelpers.verifiedToken(
-    token,
+    tokenWithoutQuotes,
     config.jwt.secret as Secret,
   );
 
@@ -117,13 +118,14 @@ const updateBook = async (
 };
 
 const deleteBook = async (id: string, token: string): Promise<IBook | null> => {
+  const tokenWithoutQuotes = token.slice(1, -1);
   const isBookExist = await Book.findOne({ _id: id });
   if (!isBookExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Book not found');
   }
 
   const verifiedUser = JwtHelpers.verifiedToken(
-    token,
+    tokenWithoutQuotes,
     config.jwt.secret as Secret,
   );
 

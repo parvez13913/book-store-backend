@@ -3,18 +3,27 @@ import { Request, Response } from 'express';
 import catchAsync from '../../../shared/catchAsync';
 import httpStatus from 'http-status';
 import sendResponse from '../../../shared/sendResponse';
-import { IUser } from './user.interface';
+import { ICreateUserResponse } from './user.interface';
 import { UserService } from './user.service';
+import config from '../../../config';
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
-  const { ...userData } = req.body;
+  const { ...user } = req.body;
+  const result = await UserService.createUser(user);
 
-  const result = await UserService.createUser(userData);
+  //cookie options for extra security
+  const cookieOptions = {
+    secure: config.env === 'production',
+    httpOnly: true,
+  };
 
-  sendResponse<IUser>(res, {
-    statusCode: httpStatus.OK,
+  //set refreshtoken into cookie
+  res.cookie('refreshToken', result.refreshToken, cookieOptions);
+
+  sendResponse<ICreateUserResponse>(res, {
     success: true,
-    message: 'User Created successfully!',
+    statusCode: httpStatus.OK,
+    message: `User created successfully`,
     data: result,
   });
 });

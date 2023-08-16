@@ -8,6 +8,12 @@ export type IUser = {
   password: string;
 };
 
+export type ICreateUserResponse = {
+  accessToken: string;
+  refreshToken: string;
+  result: IUser;
+};
+
 export type UserModel = {
   isUserExist(
     email: string,
