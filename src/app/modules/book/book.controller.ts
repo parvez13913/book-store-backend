@@ -51,6 +51,7 @@ const getSingleBook = catchAsync(async (req: Request, res: Response) => {
 const updateBook = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const updatedData = req.body;
+
   const token = req.headers.authorization;
 
   if (!token) {
@@ -69,8 +70,13 @@ const updateBook = catchAsync(async (req: Request, res: Response) => {
 
 const deleteBook = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
+  const token = req.headers.authorization;
 
-  const result = await BookService.deleteBook(id);
+  if (!token) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+  }
+
+  const result = await BookService.deleteBook(id, token);
 
   sendResponse<IBook>(res, {
     statusCode: httpStatus.OK,

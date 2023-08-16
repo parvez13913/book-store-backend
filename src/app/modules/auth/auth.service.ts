@@ -26,14 +26,14 @@ const loginUser = async (payload: ILoginUser) => {
 
   const accessToken = JwtHelpers.createToken(
     { userId, userEmail },
-    config.jwt.jwt_secret as Secret,
-    config.jwt.jwt_expires_in as string,
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string,
   );
 
   const refreshToken = JwtHelpers.createToken(
     { userId, userEmail },
-    config.jwt.jwt_refresh_secret as Secret,
-    config.jwt.jwt_refresh_expires_in as string,
+    config.jwt.refresh_secret as Secret,
+    config.jwt.refresh_expires_in as string,
   );
 
   return {
@@ -47,7 +47,7 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   try {
     verifiedToken = JwtHelpers.verifiedToken(
       token,
-      config.jwt.jwt_refresh_secret as Secret,
+      config.jwt.refresh_secret as Secret,
     );
   } catch (error) {
     throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh token');
@@ -67,8 +67,8 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 
   const newAccessToken = JwtHelpers.createToken(
     { _id, currentEmail },
-    config.jwt.jwt_secret as Secret,
-    config.jwt.jwt_expires_in as string,
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string,
   );
 
   return {

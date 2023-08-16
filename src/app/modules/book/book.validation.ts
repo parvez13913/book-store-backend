@@ -53,7 +53,7 @@ const updateBookZodSchema = z.object({
 
 const reviewZodSchema = z.object({
   body: z.object({
-    reviews: z.string({
+    review: z.string({
       required_error: 'Reviews is Required',
     }),
   }),

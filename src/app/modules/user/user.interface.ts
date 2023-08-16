@@ -6,8 +6,6 @@ export type IUser = {
   lastName: string;
   email: string;
   password: string;
-  phoneNumber?: string;
-  address?: string;
 };
 
 export type UserModel = {

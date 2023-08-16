@@ -97,7 +97,7 @@ const updateBook = async (
 
   const verifiedUser = JwtHelpers.verifiedToken(
     token,
-    config.jwt.jwt_secret as Secret,
+    config.jwt.secret as Secret,
   );
 
   if (!verifiedUser) {
@@ -116,7 +116,27 @@ const updateBook = async (
   return result;
 };
 
-const deleteBook = async (id: string): Promise<IBook | null> => {
+const deleteBook = async (id: string, token: string): Promise<IBook | null> => {
+  const isBookExist = await Book.findOne({ _id: id });
+  if (!isBookExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Book not found');
+  }
+
+  const verifiedUser = JwtHelpers.verifiedToken(
+    token,
+    config.jwt.secret as Secret,
+  );
+
+  if (!verifiedUser) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+  }
+
+  const book = await Book.findById({ _id: id });
+
+  if (book?.owner.toString() !== verifiedUser?.userId) {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden..');
+  }
+
   const result = await Book.findOneAndDelete({ _id: id });
   return result;
 };

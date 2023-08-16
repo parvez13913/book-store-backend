@@ -18,8 +18,6 @@ const createUserZodSchema = z.object({
     password: z.string({
       required_error: 'password is Required',
     }),
-    phoneNumber: z.string().optional(),
-    address: z.string().optional(),
   }),
 });
 
