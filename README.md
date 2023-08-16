@@ -2,10 +2,10 @@
 
 # API Documentation
 
-## Live Server Link :
+## Live Server Link : https://book-store-backend-peach.vercel.app/
 
 
-## Live Website Link :
+## Live Website Link : https://bookverse-13913.netlify.app/
 
 
 
