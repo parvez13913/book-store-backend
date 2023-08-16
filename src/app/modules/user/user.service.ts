@@ -8,14 +8,13 @@ import config from '../../../config';
 
 const createUser = async (payload: IUser): Promise<ICreateUserResponse> => {
   const { email } = payload;
-  //checking wheater the updated data is emty object or not
+
   if (!Object.keys(payload).length) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'You did not enter anything !');
   }
 
   const result = await User.create(payload);
 
-  //check whetehr the user exist or not
   const isUserExist = await User.isUserExist(email);
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist !');
