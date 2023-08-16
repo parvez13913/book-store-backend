@@ -24,14 +24,13 @@ const createUser = async (payload: IUser): Promise<ICreateUserResponse> => {
   const { _id: userId } = isUserExist;
   //create access token
   const accessToken = JwtHelpers.createToken(
-    { userEmail, userId },
+    { userId, userEmail },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string,
   );
 
-  //create refresh token
   const refreshToken = JwtHelpers.createToken(
-    { userEmail },
+    { userId, userEmail },
     config.jwt.refresh_secret as Secret,
     config.jwt.refresh_expires_in as string,
   );

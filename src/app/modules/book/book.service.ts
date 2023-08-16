@@ -118,7 +118,8 @@ const updateBook = async (
 };
 
 const deleteBook = async (id: string, token: string): Promise<IBook | null> => {
-  const tokenWithoutQuotes = token.slice(1, -1);
+  const tokenWithoutQuotes = token?.slice(1, -1);
+
   const isBookExist = await Book.findOne({ _id: id });
   if (!isBookExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Book not found');
